@@ -22,7 +22,7 @@ const Tasks = sequelize.define("Tasks", {
   },
   //relacion con usuario
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     allowNull: false,
     references: {
       model: 'users',

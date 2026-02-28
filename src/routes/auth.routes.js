@@ -7,6 +7,7 @@ import {
     logoutAll,
     getProfile,
 } from '../controllers/auth.controller.js';
+
 import { verifyToken, requireRole } from '../middleware/auth.middleware.js';
 
 const router = Router();

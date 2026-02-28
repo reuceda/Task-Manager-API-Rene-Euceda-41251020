@@ -12,8 +12,8 @@ const generateTokens = (payload) => {
         expiresIn: jwtConfig.expiresIn,
     });
 
-    const refreshToken = jwt.sign(payload, jwtConfig.secret, {
-        expiresIn: expiresInRefresh,
+    const refreshToken = jwt.sign(payload, jwtConfig.refreshSecret, {
+        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
     });
 
     return { accessToken, refreshToken };
@@ -55,7 +55,7 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        
+
         //Buscar usuario incluyendo password (por defecto toJSON lo omite)
         const user = await User.findOne({
             where: { email, isActive: true },
@@ -66,7 +66,8 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Credenciales inválidas.' });
         }
 
-        const isValidPassword = await user.validatePassword(password);
+        const isValidPassword = await User.prototype.comparePassword.call(user, password);
+                
         if (!isValidPassword) {
             return res.status(401).json({ message: 'Credenciales inválidas.' });
         }

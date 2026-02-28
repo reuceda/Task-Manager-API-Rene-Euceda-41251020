@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import { verifyToken, requireRole } from '../middleware/auth.middleware.js';
 import { body, param } from 'express-validator';
-import {validateRequest }  from '../middlewares/validate.middleware';
-import {tasksController} from '../controllers/tasks.controller';
+import validateRequest  from '../middleware/validate.middleware.js';
+import taskController from '../controllers/tasks.controller.js';
 
 const router = Router();
 
-router.get('/', tasksController.getAllTasks);
+router.get('/', taskController.getAllTasks);
 
 router.get('/:id',
     validateRequest([param('id').isInt().withMessage('ID must be an integer')]),
     verifyToken,
-    tasksController.getTaskById
+    taskController.getTaskById
 );
 
 router.post('/',
@@ -22,7 +22,7 @@ router.post('/',
         body('userId').isUUID().withMessage('Usuario inválido'),
     ]),
     verifyToken,
-    tasksController.createTask
+    taskController.create
 );
 
 router.put('/:id',
@@ -34,13 +34,13 @@ router.put('/:id',
         body('userId').isUUID().withMessage('Usuario inválido'),
     ]),
     verifyToken,
-    tasksController.updateTask
+    taskController.updateTask
 );
 
 router.delete('/:id',
     validateRequest([param('id').isInt().withMessage('ID must be an integer')]),
     verifyToken,
-    tasksController.deleteTask
+    taskController.deleteTask
 );
 
 export default router;

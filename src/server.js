@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { sequelize } from './models/index.js';
 import authRoutes from './routes/auth.routes.js';
+import tasksRoutes from './routes/tasks.routes.js';
 import { cleanExpiredTokens } from './controllers/auth.controller.js';
 import dotenv from 'dotenv';
 
@@ -17,6 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/tasks', tasksRoutes);
 
 //Sincronizar modelos y luego iniciar el servidor
 const start = async () => {
