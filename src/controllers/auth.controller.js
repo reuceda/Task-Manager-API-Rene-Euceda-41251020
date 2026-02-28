@@ -55,6 +55,7 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        
         //Buscar usuario incluyendo password (por defecto toJSON lo omite)
         const user = await User.findOne({
             where: { email, isActive: true },
